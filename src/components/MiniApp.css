@@ -1,0 +1,138 @@
+.miniapp-container {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.miniapp-card {
+  background: white;
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.miniapp-card h1 {
+  font-size: 28px;
+  margin-bottom: 24px;
+  color: #333;
+  text-align: center;
+}
+
+.section {
+  margin-bottom: 24px;
+}
+
+.section h2 {
+  font-size: 18px;
+  margin-bottom: 12px;
+  color: #666;
+  font-weight: 600;
+}
+
+.status {
+  font-size: 16px;
+  padding: 8px 0;
+}
+
+.status.success {
+  color: #10b981;
+  font-weight: 600;
+}
+
+.status.error {
+  color: #ef4444;
+  font-weight: 600;
+}
+
+.wallet-info {
+  margin-top: 8px;
+}
+
+.wallet-address {
+  font-family: 'Monaco', 'Courier New', monospace;
+  font-size: 14px;
+  color: #666;
+  background: #f9fafb;
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin-top: 8px;
+}
+
+.button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.button.primary {
+  background: #10b981;
+  color: white;
+}
+
+.button.primary:hover:not(:disabled) {
+  background: #059669;
+}
+
+.button.secondary {
+  background: #3b82f6;
+  color: white;
+}
+
+.button.secondary:hover:not(:disabled) {
+  background: #2563eb;
+}
+
+.error-box {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 24px;
+}
+
+.error-box p {
+  color: #dc2626;
+  font-size: 14px;
+}
+
+.warning-box {
+  background: white;
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.warning-box h2 {
+  font-size: 24px;
+  margin-bottom: 16px;
+  color: #f59e0b;
+}
+
+.warning-box p {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 12px;
+}
+
+.info-text {
+  font-size: 14px;
+  color: #999;
+  margin-top: 16px;
+}
+

@@ -70,7 +70,7 @@ export const MiniApp: React.FC = () => {
         ]
       });
 
-      alert('approve sent ' + approveResult.result);
+      console.log('approve result ' + approveResult.result);
 
       const depositResult = await callSmartContract({
         contracts: [
@@ -83,8 +83,6 @@ export const MiniApp: React.FC = () => {
           }
         ]
       });
-
-      alert('deposit sent ' + depositResult.result);
       
       if (depositResult.result === TransactionResult.SUCCESS) {
         console.log('Deposit successful:', depositResult.data.txHash)

@@ -58,17 +58,24 @@ export const MiniApp: React.FC = () => {
     const deadline = Math.floor(new Date().getTime() / 1000) + 3600
     
     try {
-      // const approveResult = await callSmartContract({
-      //   contracts:[
-      //     {
-      //       contractAddress: "0x036CbD53842c5426634e7929541eC2318f3dCF7e",
-      //       functionName: "approve",
-      //       functionParams: ["0x644F71d3376b44965222829E6974Ad88459b608D", amount],
-      //       value: "0",
-      //       chainId: ChainId.BASE_SEPOLIA
-      //     }
-      //   ]
-      // });
+      const batchResult = await callSmartContract({
+        contracts:[
+          {
+            contractAddress: "0x036CbD53842c5426634e7929541eC2318f3dCF7e",
+            functionName: "approve",
+            functionParams: ["0x644F71d3376b44965222829E6974Ad88459b608D", amount],
+            value: "0",
+            chainId: ChainId.BASE_SEPOLIA
+          },
+          {
+            contractAddress: "0x644F71d3376b44965222829E6974Ad88459b608D",
+            functionName: "deposit",
+            functionParams: ["0x036CbD53842c5426634e7929541eC2318f3dCF7e", amount, "604800", deadline, "0x"],
+            value: "0",
+            chainId: ChainId.BASE_SEPOLIA
+          }
+        ]
+      });
 
       // console.log('approve result ' + approveResult.result);
 
@@ -84,32 +91,32 @@ export const MiniApp: React.FC = () => {
       //   ]
       // });
 
-      const depositResult = await callSmartContract({
-        contracts: [
-          {
-            contractAddress: "0x644F71d3376b44965222829E6974Ad88459b608D",
-            functionName: "deposit",
-            functionParams: ["0x036CbD53842c5426634e7929541eC2318f3dCF7e", amount, "604800", deadline, "PERMIT_PLACEHOLDER_0"],
-            value: "0",
-            chainId: ChainId.BASE_SEPOLIA,
-            permits: [
-              {
-                owner: wallet as `0x${string}`,
-                token: "0x036CbD53842c5426634e7929541eC2318f3dCF7e",
-                spender: "0x644F71d3376b44965222829E6974Ad88459b608D",
-                amount: amount,
-                deadline: deadline + '',
-                nonce: "0",
-              }
-            ]
-          }
-        ]
-      });
+      // const depositResult = await callSmartContract({
+      //   contracts: [
+      //     {
+      //       contractAddress: "0x644F71d3376b44965222829E6974Ad88459b608D",
+      //       functionName: "deposit",
+      //       functionParams: ["0x036CbD53842c5426634e7929541eC2318f3dCF7e", amount, 604800, deadline, "PERMIT_PLACEHOLDER_0"],
+      //       value: "0",
+      //       chainId: ChainId.BASE_SEPOLIA,
+      //       permits: [
+      //         {
+      //           owner: wallet as `0x${string}`,
+      //           token: "0x036CbD53842c5426634e7929541eC2318f3dCF7e",
+      //           spender: "0x644F71d3376b44965222829E6974Ad88459b608D",
+      //           amount: amount,
+      //           deadline: deadline + '',
+      //           nonce: "0",
+      //         }
+      //       ]
+      //     }
+      //   ]
+      // });
       
-      if (depositResult.result === TransactionResult.SUCCESS) {
-        console.log('Deposit successful:', depositResult.data.txHash)
-        alert(`Deposit successful! Transaction: ${depositResult.data.txHash}`)
-      } else if (depositResult.result === TransactionResult.CANCELLED) {
+      if (batchResult.result === TransactionResult.SUCCESS) {
+        console.log('Deposit successful:', batchResult.data.txHash)
+        alert(`Deposit successful! Transaction: ${batchResult.data.txHash}`)
+      } else if (batchResult.result === TransactionResult.CANCELLED) {
         setError('Deposit was cancelled')
       } else {
         setError('Deposit failed')

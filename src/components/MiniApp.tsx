@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { authenticate, deposit, isWebView, TokenName, TransactionResult } from '@lemoncash/mini-app-sdk'
+import { authenticate, callSmartContract, ChainId, deposit, isWebView, TokenName, TransactionResult } from '@lemoncash/mini-app-sdk'
 import './MiniApp.css'
 
 export const MiniApp: React.FC = () => {
@@ -7,6 +7,7 @@ export const MiniApp: React.FC = () => {
   const [isAuthenticating, setIsAuthenticating] = useState(false)
   const [isDepositing, setIsDepositing] = useState(false)
   const [error, setError] = useState<string | undefined>(undefined)
+  const [amount, setAmount] = useState<string>('100')
 
   const handleAuthentication = async () => {
     setIsAuthenticating(true)
@@ -38,17 +39,34 @@ export const MiniApp: React.FC = () => {
     
     setIsDepositing(true)
     setError(undefined)
+
+    const deadline = Math.floor(new Date().getTime() / 1000) + 3600
     
     try {
-      const result = await deposit({
-        amount: '100',
-        tokenName: TokenName.USDC,
-      })
+      const approveResult = await callSmartContract({
+        contractAddress: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        functionName: "approve",
+        functionParams: ["0x2400B4E44878d25597da16659705F48927cadef1", amount],
+        value: "0",
+        chainId: ChainId.BASE
+      });
+
+      alert('approve sent ' + approveResult.result);
+
+      const depositResult = await callSmartContract({
+        contractAddress: "0x2400B4E44878d25597da16659705F48927cadef1",
+        functionName: "deposit",
+        functionParams: ["0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913", amount, "604800", deadline, "0x"],
+        value: "0",
+        chainId: ChainId.BASE
+      });
+
+      alert('deposit sent ' + depositResult.result);
       
-      if (result.result === TransactionResult.SUCCESS) {
-        console.log('Deposit successful:', result.data.txHash)
-        alert(`Deposit successful! Transaction: ${result.data.txHash}`)
-      } else if (result.result === TransactionResult.CANCELLED) {
+      if (depositResult.result === TransactionResult.SUCCESS) {
+        console.log('Deposit successful:', depositResult.data.txHash)
+        alert(`Deposit successful! Transaction: ${depositResult.data.txHash}`)
+      } else if (depositResult.result === TransactionResult.CANCELLED) {
         setError('Deposit was cancelled')
       } else {
         setError('Deposit failed')
@@ -103,6 +121,18 @@ export const MiniApp: React.FC = () => {
 
         <div className="section">
           <h2>Actions</h2>
+          <div className="input-group">
+            <label htmlFor="amount-input">Amount (USDC):</label>
+            <input
+              id="amount-input"
+              type="text"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              placeholder="Enter amount"
+              disabled={isDepositing}
+              className="amount-input"
+            />
+          </div>
           <div className="button-group">
             <button 
               onClick={handleAuthentication} 
@@ -117,7 +147,7 @@ export const MiniApp: React.FC = () => {
               disabled={!wallet || isDepositing}
               className="button secondary"
             >
-              {isDepositing ? 'Processing...' : 'Deposit 100 USDC'}
+              {isDepositing ? 'Processing...' : `Deposit ${amount} USDC`}
             </button>
           </div>
         </div>

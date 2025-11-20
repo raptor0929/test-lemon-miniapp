@@ -58,28 +58,50 @@ export const MiniApp: React.FC = () => {
     const deadline = Math.floor(new Date().getTime() / 1000) + 3600
     
     try {
-      const approveResult = await callSmartContract({
-        contracts:[
-          {
-            contractAddress: "0x036CbD53842c5426634e7929541eC2318f3dCF7e",
-            functionName: "approve",
-            functionParams: ["0x644F71d3376b44965222829E6974Ad88459b608D", amount],
-            value: "0",
-            chainId: ChainId.BASE_SEPOLIA
-          }
-        ]
-      });
+      // const approveResult = await callSmartContract({
+      //   contracts:[
+      //     {
+      //       contractAddress: "0x036CbD53842c5426634e7929541eC2318f3dCF7e",
+      //       functionName: "approve",
+      //       functionParams: ["0x644F71d3376b44965222829E6974Ad88459b608D", amount],
+      //       value: "0",
+      //       chainId: ChainId.BASE_SEPOLIA
+      //     }
+      //   ]
+      // });
 
-      console.log('approve result ' + approveResult.result);
+      // console.log('approve result ' + approveResult.result);
+
+      // const depositResult = await callSmartContract({
+      //   contracts: [
+      //     {
+      //       contractAddress: "0x644F71d3376b44965222829E6974Ad88459b608D",
+      //       functionName: "deposit",
+      //       functionParams: ["0x036CbD53842c5426634e7929541eC2318f3dCF7e", amount, "604800", deadline, "0x"],
+      //       value: "0",
+      //       chainId: ChainId.BASE_SEPOLIA
+      //     }
+      //   ]
+      // });
 
       const depositResult = await callSmartContract({
         contracts: [
           {
             contractAddress: "0x644F71d3376b44965222829E6974Ad88459b608D",
             functionName: "deposit",
-            functionParams: ["0x036CbD53842c5426634e7929541eC2318f3dCF7e", amount, "604800", deadline, "0x"],
+            functionParams: ["0x036CbD53842c5426634e7929541eC2318f3dCF7e", amount, "604800", deadline, "PERMIT_PLACEHOLDER_0"],
             value: "0",
-            chainId: ChainId.BASE_SEPOLIA
+            chainId: ChainId.BASE_SEPOLIA,
+            permits: [
+              {
+                owner: wallet as `0x${string}`,
+                token: "0x036CbD53842c5426634e7929541eC2318f3dCF7e",
+                spender: "0x644F71d3376b44965222829E6974Ad88459b608D",
+                amount: amount,
+                deadline: deadline + '',
+                nonce: "0",
+              }
+            ]
           }
         ]
       });

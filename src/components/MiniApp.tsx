@@ -44,21 +44,21 @@ export const MiniApp: React.FC = () => {
     
     try {
       const approveResult = await callSmartContract({
-        contractAddress: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        contractAddress: "0x036CbD53842c5426634e7929541eC2318f3dCF7e",
         functionName: "approve",
-        functionParams: ["0x2400B4E44878d25597da16659705F48927cadef1", amount],
+        functionParams: ["0x644F71d3376b44965222829E6974Ad88459b608D", amount],
         value: "0",
-        chainId: ChainId.BASE
+        chainId: ChainId.BASE_SEPOLIA
       });
 
       alert('approve sent ' + approveResult.result);
 
       const depositResult = await callSmartContract({
-        contractAddress: "0x2400B4E44878d25597da16659705F48927cadef1",
+        contractAddress: "0x644F71d3376b44965222829E6974Ad88459b608D",
         functionName: "deposit",
-        functionParams: ["0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913", amount, "604800", deadline, "0x"],
+        functionParams: ["0x036CbD53842c5426634e7929541eC2318f3dCF7e", amount, "604800", deadline, "0x"],
         value: "0",
-        chainId: ChainId.BASE
+        chainId: ChainId.BASE_SEPOLIA
       });
 
       alert('deposit sent ' + depositResult.result);
@@ -105,7 +105,7 @@ export const MiniApp: React.FC = () => {
             <div className="wallet-info">
               <p className="status success">✅ Connected</p>
               <p className="wallet-address">
-                {wallet.slice(0, 8)}...{wallet.slice(-8)}
+                {wallet}
               </p>
             </div>
           ) : (

@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { authenticate, callSmartContract, ChainId, deposit, isWebView, TokenName, TransactionResult } from '@lemoncash/mini-app-sdk'
-import {
-  getCsrfToken,
-  signIn as nextAuthSignIn,
-  useSession,
-} from "next-auth/react";
+import { authenticate, callSmartContract, ChainId, isWebView, TransactionResult } from '@lemoncash/mini-app-sdk'
 import './MiniApp.css'
 
 export const MiniApp: React.FC = () => {
@@ -14,15 +9,22 @@ export const MiniApp: React.FC = () => {
   const [error, setError] = useState<string | undefined>(undefined)
   const [amount, setAmount] = useState<string>('100')
 
+  // Generate a unique nonce (at least 8 alphanumeric characters as required by SDK)
+  const generateNonce = (): string => {
+    // Use crypto.randomUUID if available, otherwise generate a random string
+    if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+      return crypto.randomUUID().replace(/-/g, '').substring(0, 16)
+    }
+    // Fallback: timestamp + random string
+    return Date.now().toString(36) + Math.random().toString(36).substring(2, 10)
+  }
+
   const handleAuthentication = async () => {
     setIsAuthenticating(true)
     setError(undefined)
     
     try {
-      const nonce = await getCsrfToken();
-      if (!nonce) {
-        throw new Error("Could not get CSRF token");
-      }
+      const nonce = generateNonce()
 
       const result = await authenticate({
         chainId: ChainId.BASE_SEPOLIA,

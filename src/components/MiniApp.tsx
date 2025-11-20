@@ -59,21 +59,29 @@ export const MiniApp: React.FC = () => {
     
     try {
       const approveResult = await callSmartContract({
-        contractAddress: "0x036CbD53842c5426634e7929541eC2318f3dCF7e",
-        functionName: "approve",
-        functionParams: ["0x644F71d3376b44965222829E6974Ad88459b608D", amount],
-        value: "0",
-        chainId: ChainId.BASE_SEPOLIA
+        contracts:[
+          {
+            contractAddress: "0x036CbD53842c5426634e7929541eC2318f3dCF7e",
+            functionName: "approve",
+            functionParams: ["0x644F71d3376b44965222829E6974Ad88459b608D", amount],
+            value: "0",
+            chainId: ChainId.BASE_SEPOLIA
+          }
+        ]
       });
 
       alert('approve sent ' + approveResult.result);
 
       const depositResult = await callSmartContract({
-        contractAddress: "0x644F71d3376b44965222829E6974Ad88459b608D",
-        functionName: "deposit",
-        functionParams: ["0x036CbD53842c5426634e7929541eC2318f3dCF7e", amount, "604800", deadline, "0x"],
-        value: "0",
-        chainId: ChainId.BASE_SEPOLIA
+        contracts: [
+          {
+            contractAddress: "0x644F71d3376b44965222829E6974Ad88459b608D",
+            functionName: "deposit",
+            functionParams: ["0x036CbD53842c5426634e7929541eC2318f3dCF7e", amount, "604800", deadline, "0x"],
+            value: "0",
+            chainId: ChainId.BASE_SEPOLIA
+          }
+        ]
       });
 
       alert('deposit sent ' + depositResult.result);

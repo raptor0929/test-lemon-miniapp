@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { authenticate, callSmartContract, ChainId, deposit, isWebView, TokenName, TransactionResult } from '@lemoncash/mini-app-sdk'
+import {
+  getCsrfToken,
+  signIn as nextAuthSignIn,
+  useSession,
+} from "next-auth/react";
 import './MiniApp.css'
 
 export const MiniApp: React.FC = () => {
@@ -14,7 +19,15 @@ export const MiniApp: React.FC = () => {
     setError(undefined)
     
     try {
-      const result = await authenticate()
+      const nonce = await getCsrfToken();
+      if (!nonce) {
+        throw new Error("Could not get CSRF token");
+      }
+
+      const result = await authenticate({
+        chainId: ChainId.BASE_SEPOLIA,
+        nonce,
+      });
       
       if (result.result === TransactionResult.SUCCESS) {
         setWallet(result.data.wallet)

@@ -8,9 +8,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@lemoncash/mini-app-sdk": "^0.1.5",
+    "next-auth": "^4.24.13",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "@lemoncash/mini-app-sdk": "^0.1.5"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.0",
@@ -20,4 +21,3 @@
     "vite": "^5.0.0"
   }
 }
-
